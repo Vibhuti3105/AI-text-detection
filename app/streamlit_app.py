@@ -1,5 +1,6 @@
 import streamlit as st
 import tensorflow as tf
+import tensorflow_hub as hub
 import tensorflow_text
 import os
 
@@ -8,7 +9,7 @@ st.set_page_config(page_title="AI Text Detector")
 st.title("AI Text Detection")
 
 if os.path.exists("saved_models/bert_detector"):
-    model = tf.keras.models.load_model("saved_models/bert_detector")
+    model = tf.keras.models.load_model("saved_models/bert_detector", custom_objects={'KerasLayer': hub.KerasLayer})
     st.write("Paste text below to check if it is AI-generated.")
     
     text = st.text_area("Enter text here")
