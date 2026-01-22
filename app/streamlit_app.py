@@ -4,7 +4,6 @@ st.set_page_config(page_title="AI Text Detector")
 
 st.title("AI Text Detection")
 
-st.write("App is loading...")
+st.write("App deployed successfully!")
 
-# Temporarily disabled model loading for testing
-st.error("Model loading temporarily disabled for deployment testing.")
+st.info("Model files removed for faster deployment. To add the model back, train it locally and upload to the repo.")
