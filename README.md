@@ -47,8 +47,6 @@ Distribution shift between training and unseen test data can affect confidence c
 
 In some noisy scenarios, simpler lexical models (e.g., TF-IDF) may outperform deep models.
 
-These observations highlight the importance of data quality and robustness analysis in AI-text detection systems.
-
 ## 🛠️ Tech Stack
 
 **Frontend**: Streamlit
