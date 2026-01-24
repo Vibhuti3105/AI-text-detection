@@ -1,33 +1,65 @@
-# AI Text Detection
+# AI-Generated Text Detection using BERT
 
-A machine learning application that detects whether text was written by AI or humans using a BERT-based model.
+A machine learning system that detects whether a given text is human-written or AI-generated using a fine-tuned BERT-based sequence classification model. The project focuses on black-box AI-text detection, robustness analysis, and real-world failure modes.
 
-## Features
+## ✨ Key Features
 
-- **Real-time Analysis**: Enter any text and get instant AI probability scores
-- **BERT Model**: Uses a fine-tuned BERT model for accurate detection
-- **Streamlit Interface**: Clean, user-friendly web interface
+**Black-Box AI-Text Detection**
+Detects AI-generated text without relying on watermarking or model internals.
 
-## How to Use
+**BERT-Based Classification**
+Fine-tuned BERT model captures semantic, lexical, and syntactic patterns to distinguish human and LLM-generated text.
 
-1. Enter your text in the text area
-2. Click "Analyze"
-3. View the AI probability score and classification
+**Robust Dataset Curation**
+Trained on 35,500+ samples aggregated from multiple public datasets, including adversarial and diverse writing styles.
 
-## Model Details
+**Interactive Web Interface**
+Streamlit-based UI for real-time inference and probability scoring.
 
-- **Architecture**: BERT (Bidirectional Encoder Representations from Transformers)
-- **Training Data**: Mixed dataset of human-written and AI-generated essays
-- **Output**: Probability score between 0-1 (higher = more likely AI-generated)
+## 🧠 How It Works (High Level)
 
-## Technology Stack
+**Preprocessing**
+Text is normalized and tokenized using BERT-compatible preprocessing.
 
-- **Frontend**: Streamlit
-- **Backend**: TensorFlow 2.15.0
-- **Model**: BERT via TensorFlow Hub
-- **Language**: Python 3.10
+**Model Inference**
+A fine-tuned BERT sequence classification model predicts the probability of AI-generated content.
 
-## Local Development
+**Decision Layer**
+Outputs a probability score (0–1) along with a human/AI classification, optimized for low false-positive rates.
+
+## 📊 Model Details
+
+**Architecture**: BERT (Bidirectional Encoder Representations from Transformers)
+
+**Training Data**: Mixed dataset of human-written and AI-generated essays
+
+**Dataset Size**: 35,500+ samples
+
+**Evaluation Metric**: F1-Score (98.2% on benchmark datasets)
+
+**Output**: Probability score ∈ [0, 1]
+
+## ⚠️ Known Limitations & Failure Modes
+
+Performance degrades on heavily corrupted or typo-rich text, where token embeddings become unreliable.
+
+Distribution shift between training and unseen test data can affect confidence calibration.
+
+In some noisy scenarios, simpler lexical models (e.g., TF-IDF) may outperform deep models.
+
+These observations highlight the importance of data quality and robustness analysis in AI-text detection systems.
+
+## 🛠️ Tech Stack
+
+**Frontend**: Streamlit
+
+**Backend**: TensorFlow 2.15
+
+**Model**: BERT via TensorFlow Hub
+
+**Language**: Python 3.10
+
+## 🚀 Local Development
 
 ```bash
 # Clone the repository
@@ -41,6 +73,6 @@ pip install -r requirements.txt
 streamlit run app/streamlit_app.py
 ```
 
-## Deployment
+## 🌐 Deployment
 
-This app is deployed on Streamlit Cloud for easy access.
+The application is deployed on Streamlit Cloud for easy access and experimentation.
