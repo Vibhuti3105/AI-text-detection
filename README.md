@@ -70,7 +70,3 @@ pip install -r requirements.txt
 # Run the app
 streamlit run app/streamlit_app.py
 ```
-
-## 🌐 Deployment
-
-The application is deployed on Streamlit Cloud for easy access and experimentation.
