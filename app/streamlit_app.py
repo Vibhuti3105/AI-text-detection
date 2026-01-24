@@ -19,7 +19,7 @@ if os.path.exists("saved_models/bert_detector"):
 
         if st.button("Analyze"):
             with st.spinner("Analyzing..."):
-                pred = model.predict([text])[0][0]
+                pred = model.predict([text])[0][0].item()
                 st.write(f"### AI Probability: {pred:.2f}")
 
                 if pred > 0.5:
