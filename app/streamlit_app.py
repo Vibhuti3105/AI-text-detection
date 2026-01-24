@@ -36,9 +36,12 @@ def create_bert_model():
     model = tf.keras.Model(input_layer, output_layer)
     return model
 
-# Try to load model from Hugging Face
+# Try to load model from Hugging Face first, then fallback to local
+model = None
+model_source = None
+
 try:
-    st.info("Loading model from Hugging Face...")
+    st.info("🔄 Loading model from Hugging Face...")
 
     # Download weights from Hugging Face
     weights_path = hf_hub_download(
@@ -53,20 +56,47 @@ try:
     model.load_weights(weights_path)
 
     st.success("✅ Model loaded successfully from Hugging Face!")
+    model_source = "Hugging Face"
+
+except Exception as e:
+    st.warning(f"⚠️ Could not load from Hugging Face: {str(e)}")
+    st.info("🔄 Trying local model as fallback...")
+
+    # Fallback to local model
+    if os.path.exists("saved_models/bert_detector"):
+        try:
+            model = tf.keras.models.load_model("saved_models/bert_detector", custom_objects={'KerasLayer': hub.KerasLayer})
+            st.success("✅ Model loaded successfully from local files!")
+            model_source = "Local"
+        except Exception as e2:
+            st.error(f"❌ Error loading local model: {str(e2)}")
+            model = None
+    else:
+        st.error("❌ No model found locally or on Hugging Face")
+        st.info("💡 To fix: Run `python src/model_training.py` to train a model")
+        model = None
+
+# Only show the interface if we have a working model
+if model is not None:
+    st.info(f"🤖 Using model from: {model_source}")
 
     text = st.text_area("Enter text here", height=200)
 
     if st.button("Analyze"):
         with st.spinner("Analyzing..."):
-            pred = model.predict([text])[0][0]
-            st.write(f"### AI Probability: {pred:.2f}")
+            try:
+                pred = model.predict([text])[0][0]
+                st.write(f"### AI Probability: {pred:.2f}")
 
-            if pred > 0.5:
-                st.error("🤖 Likely AI-generated")
-            else:
-                st.success("👤 Likely Human-written")
-
-except Exception as e:
-    st.error(f"❌ Error loading model from Hugging Face: {str(e)}")
-    st.info("💡 Alternative: Run locally with `streamlit run app/streamlit_app.py`")
-    st.info("🔧 To use local model: Ensure 'saved_models/bert_detector' exists")
+                if pred > 0.5:
+                    st.error("🤖 Likely AI-generated")
+                else:
+                    st.success("👤 Likely Human-written")
+            except Exception as e:
+                st.error(f"❌ Error during prediction: {str(e)}")
+else:
+    st.error("🚫 No working model available")
+    st.info("🔧 Troubleshooting:")
+    st.info("1. Check internet connection for Hugging Face")
+    st.info("2. Ensure local model exists: `saved_models/bert_detector`")
+    st.info("3. Train model: `python src/model_training.py`")
