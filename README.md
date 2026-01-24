@@ -43,4 +43,4 @@ streamlit run app/streamlit_app.py
 
 ## Deployment
 
-This app is deployed on Hugging Face Spaces for easy access.
+This app is deployed on Streamlit Cloud for easy access.
